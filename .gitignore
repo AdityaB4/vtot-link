@@ -20,3 +20,6 @@ vtot-link
 
 # Go workspace file
 go.work
+
+# config file
+config.yaml
