@@ -1,11 +1,11 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+
+*/
 package main
 
-import "fmt"
+import "github.com/AdityaB4/vtot-link/cmd"
 
 func main() {
-	n, err := fmt.Printf("hello")
-	if err != nil {
-		return
-	}
-	fmt.Printf("number of bytes: %v\n", n)
+	cmd.Execute()
 }
