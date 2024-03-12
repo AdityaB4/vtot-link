@@ -35,8 +35,10 @@ const (
 
 // configCmd represents the config command
 var configCmd = &cobra.Command{
-	Use:   "config [-api-key apikey]",
-	Short: "used to configure the VirusTotal api key",
+	Use:     "config [--api-key a] [--threshold t]",
+	Aliases: []string{"c"},
+	Short:   "used to configure the VirusTotal api key",
+	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("config called")
 	},
