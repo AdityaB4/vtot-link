@@ -25,6 +25,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+type ConfigOption int
+
+// TODO: Find a better way for this (with intellisense)
+const (
+	API_KEY ConfigOption = iota
+	THRESHOLD
 )
 
 // configCmd represents the config command
