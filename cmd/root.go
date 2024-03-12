@@ -4,7 +4,10 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var cfgFile string = "./config.yaml"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -22,7 +25,10 @@ func Execute() {
 }
 
 func init() {
-	cfgFile := "./config.yaml"
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("./")
+	// TODO: Think about whether a flag is needed for this
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", cfgFile, "config file")
 
 	// Flags scoped only to this command
