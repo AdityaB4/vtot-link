@@ -25,6 +25,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
 type ConfigOption int
 
 // TODO: Find a better way for this (with intellisense)
@@ -40,12 +43,50 @@ var configCmd = &cobra.Command{
 	Short:   "used to configure the VirusTotal api key",
 	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("config called")
+		if cmd.Flags().NFlag() == 0 {
+			fmt.Println("No config options given. Maybe this will help you:")
+			fmt.Println(cmd.Usage())
+			return
+		}
+		if apiKey, err := cmd.Flags().GetString("api-key"); err == nil && apiKey != "" {
+			setConfigOption(API_KEY, apiKey)
+			fmt.Println("api key set to", apiKey)
+		}
+		// TODO: Check negative
+		if threshold, err := cmd.Flags().GetInt("threshold"); err == nil {
+			setConfigOption(THRESHOLD, threshold)
+			fmt.Printf("threshold set to %d seconds\n", threshold)
+		}
 	},
+}
+
+func setConfigOption(option ConfigOption, value any) {
+	switch option {
+	case API_KEY:
+		viper.Set("apiKey", value)
+	case THRESHOLD:
+		viper.Set("threshold", value)
+	default:
+		fmt.Println("Invalid config option provided. Aborting")
+	}
+	writeConfigFile()
+}
+
+func writeConfigFile() {
+	if err := viper.WriteConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// If the config file doesn't exist, try to create it
+			viper.SafeWriteConfig()
+		} else {
+			// Handle other errors
+			fmt.Println("Error writing config:", err)
+		}
+	}
 }
 
 func init() {
 	rootCmd.AddCommand(configCmd)
 
 	configCmd.Flags().String("api-key", "", "--api-key <your VT api key>")
+	configCmd.Flags().String("threshold", "", "--threshold <desired threshold in seconds>")
 }
