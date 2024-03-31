@@ -1,5 +1,5 @@
 # vtot-link
-> A project to solve my gripes with VirusTotal's CLI and API
+> A (WIP) project to solve my gripes with VirusTotal's CLI and API
 
 ## Setup
 Follow the instructions [here](https://docs.virustotal.com/reference/getting-started)
